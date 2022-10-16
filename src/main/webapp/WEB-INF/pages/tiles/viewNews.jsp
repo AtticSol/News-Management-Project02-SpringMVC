@@ -14,6 +14,8 @@
 <fmt:message bundle="${loc}" key="local.news.newscontent" var="content" />
 <fmt:message bundle="${loc}" key="local.news.button.edit" var="edit" />
 <fmt:message bundle="${loc}" key="local.news.button.delete" var="delete" />
+<fmt:message bundle="${loc}" key="local.message.popup.delete.one" var="deleteMessage" />
+
 
 
 
@@ -66,10 +68,11 @@
 	</div>
 
 
-	<div class="second-view-button">
-		<form:form action="${pageContext.request.contextPath}/news/do_delete_news" method="post">
+	<div class="second-view-button" id="delete">
+		<form:form action="${pageContext.request.contextPath}/news/do_delete_news" method="post"
+				onclick="if (!(confirm('${deleteMessage}'))) return false">
 			<input type="hidden" name="newsId" value="${newsData.newsID}" />
 			<input type="submit" value="${delete}" />
 		</form:form>
 	</div>
-</c:if>
+ </c:if>

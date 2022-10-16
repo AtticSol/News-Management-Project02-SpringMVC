@@ -41,12 +41,12 @@
 			<font class="redWarning"> ${registrationErrorMessage} </font>
 		</c:if>
 
-		<div class="inline_blocks">
+ 		<div class="inline_blocks">
 			<div class="block1">
 				<div class="title">${name}:</div>
 			</div>
 			<div class="block2">
-				<form:input placeholder="${namePlaceholder}" path="name" class="text" />
+				<input type="text" name="name" value="" placeholder="${namePlaceholder}"  class="text" />
 			</div>
 		</div>
 		
@@ -84,28 +84,29 @@
 			</c:if>		
 		</c:forEach>
 
-		<div class="inline_blocks">
+		
+<%--  		<div class="inline_blocks">
 			<div class="block1">
 				<div class="title">${confirmPassword}:</div>
 			</div>
 			<div class="block2">
-				<form:password placeholder="${confirmPasswordPlaceholder}" path="confirmPassword" class="text" />
+				<input type="password" name="confirmPassword" value="" placeholder="${confirmPasswordPlaceholder}"  class="text" />
 			</div>
 		</div>
 		<br />
 		
-		<c:forEach var="error" items="${errorList}">
+ 		<c:forEach var="error" items="${errorList}">
 			<c:if test="${erroe eq 'passwordConfirmError'}">
 				<font class="redWarning"> ${passwordConfirmErrorMessage} </font>
 			</c:if>
-		</c:forEach>
-
+		</c:forEach> --%>
+	
 		<div class="inline_blocks">
 			<div class="block1">
 				<div class="title">${email}:</div>
 			</div>
 			<div class="block2">
-				<form:input placeholder="${emailPlaceholder}" path="email" class="text" />
+				<input type="text" name="email" value="" placeholder="${emailPlaceholder}" class="text" />
 			</div>
 		</div>
 		

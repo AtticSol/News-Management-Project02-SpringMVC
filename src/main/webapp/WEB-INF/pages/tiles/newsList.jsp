@@ -11,7 +11,8 @@
 <fmt:message bundle="${loc}" key="local.news.href.edit" var="edit" />
 <fmt:message bundle="${loc}" key="local.news.button.delete" var="delete" />
 <fmt:message bundle="${loc}" key="local.message.nonews" var="noNews" />
-<fmt:message bundle="${loc}" key="local.news.add.error.delete" var="noNewsToDeleteMessage" />
+<fmt:message bundle="${loc}" key="local.news.add.error.delete" var="noNewsToDeleteMessage" /> 
+<fmt:message bundle="${loc}" key="local.message.popup.delete" var="deleteMessage" />
 
 <style>
 .redWarning {
@@ -77,7 +78,7 @@
 			<c:if test="${not (noNewsToDelete eq null)}">
 				<font class="redWarning"> ${noNewsToDeleteMessage} </font>
 			</c:if>
-			<input type="submit" value="${delete}" />
+			<input type="submit" value="${delete}" onclick="if (!(confirm('${deleteMessage}'))) return false" />
 		</div>
 	</c:if>
 

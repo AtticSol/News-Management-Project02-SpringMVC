@@ -2,6 +2,7 @@ package by.itac.project02.service;
 
 import java.util.List;
 
+import by.itac.project02.bean.InfoAboutUpdatedNews;
 import by.itac.project02.bean.NewsData;
 import by.itac.project02.service.validation.NewsValidationException;
 
@@ -16,7 +17,7 @@ public interface NewsService {
 
 	List<Integer> pageList() throws ServiceException;
 
-	void updateNews(NewsData news, int reporterID) throws ServiceException, NewsValidationException;
+	void updateNews(InfoAboutUpdatedNews info, int reporterID, NewsData news) throws ServiceException, NewsValidationException;
 
 	void deleteNews(String[] idNewsArr) throws ServiceException, NewsValidationException;
 

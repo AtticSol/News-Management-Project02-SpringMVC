@@ -8,7 +8,6 @@ import by.itac.project02.controller.JSPPageName;
 import by.itac.project02.controller.Role;
 import by.itac.project02.controller.SessionAtribute;
 import by.itac.project02.service.ServiceException;
-import by.itac.project02.service.ServiceProvider;
 import by.itac.project02.service.UserService;
 import by.itac.project02.service.validation.UserValidationException;
 
@@ -16,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,8 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/login")
 public class Logination {
-
-	private final UserService userService = ServiceProvider.getInstance().getUserService();
+	
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping("/logination_form")
 	public String loginationForm(Model model, HttpServletRequest request) {
@@ -65,9 +66,9 @@ public class Logination {
 				session.setAttribute(SessionAtribute.USER_STATUS, SessionAtribute.ACTIVE);
 				session.setAttribute(Role.ROLE.getTitle(), role);
 				session.setAttribute(SessionAtribute.USER_ID, idUser);
-				session.setAttribute(SessionAtribute.PAGE_URL, JSPPageName.NEWS_LIST);
+				session.setAttribute(SessionAtribute.PAGE_URL, JSPPageName.GO_TO_NEWS_LIST);
 
-				return "redirect:/" + JSPPageName.NEWS_LIST;
+				return "redirect:/" + JSPPageName.GO_TO_NEWS_LIST;
 			} else {
 				model.addAttribute(Atribute.AUTHENTICATION_ERROR, Atribute.AUTHENTICATION_ERROR);
 				return JSPPageName.BASE_PAGE;

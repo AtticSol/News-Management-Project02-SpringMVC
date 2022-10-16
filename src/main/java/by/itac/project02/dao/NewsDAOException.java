@@ -1,7 +1,7 @@
 package by.itac.project02.dao;
 
 public class NewsDAOException extends Exception {
-
+	
 	private static final long serialVersionUID = 1L;
 
 	public NewsDAOException() {

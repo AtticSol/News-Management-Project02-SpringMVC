@@ -7,8 +7,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import by.itac.project02.dao.connection.ConnectionPool;
-import by.itac.project02.dao.connection.ConnectionPoolException;
+//import by.itac.project02.dao.connection.ConnectionPool;
+//import by.itac.project02.dao.connection.ConnectionPoolException;
 
 public class ProjectContexListener implements ServletContextListener {
 
@@ -19,22 +19,22 @@ public class ProjectContexListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent e) {
-		try {
-			ConnectionPool.getInstanceCP();
-		} catch (ConnectionPoolException ex) {
-			log.log(Level.ERROR, "ConnectionPool is not initialized", ex);
-			throw new RuntimeException();
-		}
+//		try {
+//			ConnectionPool.getInstanceCP();
+//		} catch (ConnectionPoolException ex) {
+//			log.log(Level.ERROR, "ConnectionPool is not initialized", ex);
+//			throw new RuntimeException();
+//		}
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent e) {
-		try {
-			ConnectionPool.getInstanceCP().dispose();
-		} catch (ConnectionPoolException ex) {
-			log.log(Level.ERROR, "ConnectionPool is not destroyed", ex);
-			throw new RuntimeException();
-		}
+//		try {
+//			ConnectionPool.getInstanceCP().dispose();
+//		} catch (ConnectionPoolException ex) {
+//			log.log(Level.ERROR, "ConnectionPool is not destroyed", ex);
+//			throw new RuntimeException();
+//		}
 	}
 
 

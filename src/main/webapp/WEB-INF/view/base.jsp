@@ -33,7 +33,7 @@
 		<div class="base-layout-wrapper">
 			<div class="menu">
 				<c:if test="${not (sessionScope.userStatus eq  'active')}">
-					<c:out value="${welcome}" />
+					<c:out value="${welcome}" />   					    
 				</c:if>
 				<c:if test="${sessionScope.userStatus eq 'active'}">
 					<c:import url="/WEB-INF/pages/tiles/menu.jsp" />

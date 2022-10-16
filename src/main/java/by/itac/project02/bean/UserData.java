@@ -1,41 +1,94 @@
 package by.itac.project02.bean;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import by.itac.project02.controller.Role;
 
+
+@Entity
+@Table(name = "users")
 public class UserData implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
+		
+	@Column(name = "login")
 	private String login;
-	private String password;	
-	private String confirmPassword;
-	private String email;
+	
+	@Column(name = "password")
+	private String password;
+			
+	@Column(name = "role")
 	private String role;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_details_id_user_details")
+	private UserDetail userDetail;
+	
+	
+	@OneToMany(fetch = FetchType.LAZY,
+			mappedBy = "reporter",
+			cascade = {CascadeType.DETACH, CascadeType.MERGE,
+					CascadeType.PERSIST, CascadeType.REFRESH})
+	private List<NewsData> createdNews;
+	
+	
+	@OneToMany(fetch = FetchType.LAZY,
+			mappedBy = "reporter",
+			cascade = {CascadeType.DETACH, CascadeType.MERGE,
+					CascadeType.PERSIST, CascadeType.REFRESH})
+	private List<InfoAboutUpdatedNews> updatedNews;
+	
+	public List<InfoAboutUpdatedNews> getUpdatedNews() {
+		return updatedNews;
+	}
+
+	public void setUpdatedNews(List<InfoAboutUpdatedNews> updatedNews) {
+		this.updatedNews = updatedNews;
+	}
+
 	{
 		this.role = Role.USER.getTitle();
+		this.userDetail = new UserDetail("name", "email");
 	}
 	
 	public UserData() { }
 
-	public UserData(String name, String login, String password, String confirmPassword, String email) {
-		this.name = name;
+	public UserData(String name, String login, String password, 
+//			String confirmPassword, 
+			String email,
+			UserDetail userDetail) {
 		this.login = login;
 		this.password = password;
-		this.confirmPassword = confirmPassword;
-		this.email = email;
+//		this.confirmPassword = confirmPassword;
 		this.role = Role.USER.getTitle();
+		this.userDetail = userDetail; 
 	}
 
-	public String getName() {
-		return name;
+
+	public int getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getLogin() {
@@ -54,21 +107,13 @@ public class UserData implements Serializable{
 		this.password = password;
 	}
 
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
-
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
+//	public String getConfirmPassword() {
+//		return confirmPassword;
+//	}
+//
+//	public void setConfirmPassword(String confirmPassword) {
+//		this.confirmPassword = confirmPassword;
+//	}
 	
 	public String getRole() {
 		return role;
@@ -76,11 +121,27 @@ public class UserData implements Serializable{
 
 	public void setRole(String role) {
 		this.role = role;
+	}	
+	
+	public void setUserDetail(UserDetail userDetail) {
+		this.userDetail = userDetail;
+	}
+	
+	public UserDetail getUserDetail() {
+		return userDetail;
+	}
+
+	public List<NewsData> getCreatedNews() {
+		return createdNews;
+	}
+
+	public void setCreatedNews(List<NewsData> createdNews) {
+		this.createdNews = createdNews;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(confirmPassword, email, login, name, password, role);
+		return Objects.hash(id, login, password, role, userDetail);
 	}
 
 	@Override
@@ -92,15 +153,14 @@ public class UserData implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		UserData other = (UserData) obj;
-		return Objects.equals(confirmPassword, other.confirmPassword) && Objects.equals(email, other.email)
-				&& Objects.equals(login, other.login) && Objects.equals(name, other.name)
-				&& Objects.equals(password, other.password) && Objects.equals(role, other.role);
+		return id == other.id && Objects.equals(login, other.login) && Objects.equals(password, other.password)
+				&& Objects.equals(role, other.role) && Objects.equals(userDetail, other.userDetail);
 	}
 
 	@Override
 	public String toString() {
-		return "UserData [name=" + name + ", login=" + login + ", password=" + password + ", confirmPassword="
-				+ confirmPassword + ", email=" + email + ", role=" + role + "]";
+		return "UserData [id=" + id + ", login=" + login + ", password=" + password + ", role=" + role + ", userDetail="
+				+ userDetail + "]";
 	}
 
 	

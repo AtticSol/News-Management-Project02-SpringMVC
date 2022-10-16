@@ -10,9 +10,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import by.itac.project02.bean.UserData;
-import by.itac.project02.dao.DAOProvider;
 import by.itac.project02.dao.UserDAO;
 import by.itac.project02.dao.UserDAOException;
 import by.itac.project02.service.validation.UserValidationException;
@@ -20,23 +21,24 @@ import by.itac.project02.service.validation.UserValidationService;
 import by.itac.project02.util.Constant;
 import by.itac.project02.util.InputUserDataError;
 
+@Service
 public class UserValidationServiceImpl implements UserValidationService {
 
 	private static final InputUserDataError noError = InputUserDataError.NO_ERROR;
-	private final UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
 
 	private static final String PASSWORD_REGEX = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}";
 	private static final String EMAIL_REGEX = "\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*\\.\\w{2,4}";
 	private static final Logger log = LogManager.getRootLogger();
 
 	@Override
-	public boolean inputRegistrationDataValidation(UserData user) throws UserValidationException {
-		
+	@Transactional
+	public boolean inputRegistrationDataValidation(UserData user, UserDAO userDAO) throws UserValidationException {
+
 		List<String> errorList = Collections.synchronizedList(new ArrayList<String>());
 
-		error(errorList, checkLogin(user.getLogin()));
-		error(errorList, checkPassword(user.getPassword(), user.getConfirmPassword(), user));
-		error(errorList, checkEmail(user.getEmail()));
+		error(errorList, checkLogin(user.getLogin(), userDAO));
+		error(errorList, checkPassword(user.getPassword(), user));
+		error(errorList, checkEmail(user.getUserDetail().getEmail(), userDAO));
 
 		if (!errorList.isEmpty()) {
 			throw new UserValidationException(errorList, "User not added");
@@ -45,11 +47,14 @@ public class UserValidationServiceImpl implements UserValidationService {
 	}
 
 	@Override
-	public boolean inputAithorizationDataValidation(String login, String password) throws UserValidationException {
-		if (!isLogin(login)) {
+	@Transactional
+	public boolean inputAithorizationDataValidation(String login, String password, UserDAO userDAO)
+			throws UserValidationException {
+
+		if (!isLogin(login, userDAO)) {
 			return false;
 		} else {
-			if (!isCorrectPassword(login, password)) {
+			if (!isCorrectPassword(login, password, userDAO)) {
 				return false;
 			}
 		}
@@ -60,37 +65,38 @@ public class UserValidationServiceImpl implements UserValidationService {
 	public boolean userIDValidation(int userID) throws UserValidationException {
 		return userID == Constant.NO_NUMBER;
 	}
-	
-	private boolean isCorrectPassword(String login, String password) throws UserValidationException {
+
+	private boolean isCorrectPassword(String login, String password, UserDAO userDAO) throws UserValidationException {
 		try {
-			String hashPassword = userDAO.takePassword(login);
-			String salt = hashPassword.substring(0,29);
+
+			List<UserData> user = userDAO.takePassword(login);
+			String hashPassword = user.get(0).getPassword();
+			String salt = hashPassword.substring(0, 29);
 			return hashPassword.equals(BCrypt.hashpw(password, salt));
 		} catch (UserDAOException e) {
 			log.log(Level.ERROR, "Password validation failed", e);
 			throw new UserValidationException(e);
 		}
-	}	
-		
-	private boolean isLogin(String login) throws UserValidationException {
+	}
+
+	private boolean isLogin(String login, UserDAO userDAO) throws UserValidationException {
 		try {
-			return userDAO.isLogin(login);
+			return userDAO.isLogin(login).size() == Constant.ONE_NUMBER;
+
 		} catch (UserDAOException e) {
 			log.log(Level.ERROR, "Login validation failed", e);
 			throw new UserValidationException(e);
 		}
 	}
 
-	private InputUserDataError checkPassword(String password, String confirmPassword, UserData user) {
+	private InputUserDataError checkPassword(String password, UserData user) {
 		if (!isValidPassword(password)) {
 			return InputUserDataError.PASSWORD_CREATE_ERROR;
-		} else if (!password.equals(confirmPassword)) {
-			return InputUserDataError.PASSWORD_CONFIRM_ERROR;
 		}
-				
+
 		String hashPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-		user.setPassword(hashPassword);	
-		
+		user.setPassword(hashPassword);
+
 		return noError;
 	}
 
@@ -98,20 +104,20 @@ public class UserValidationServiceImpl implements UserValidationService {
 		return password.matches(PASSWORD_REGEX);
 	}
 
-	private InputUserDataError checkLogin(String login) throws UserValidationException {
+	private InputUserDataError checkLogin(String login, UserDAO userDAO) throws UserValidationException {
 		if (login.length() < 6) {
 			return InputUserDataError.LOGIN_MIN_LENGTH;
-		} else if (isLogin(login)) {
+		} else if (isLogin(login, userDAO)) {
 			return InputUserDataError.LOGIN_EXISTS;
 		}
 		return noError;
 	}
 
-	private boolean isEmail(String email) throws UserDAOException {
-		return userDAO.isEmail(email);
+	private boolean isEmail(String email, UserDAO userDAO) throws UserDAOException {
+		return (userDAO.isEmail(email).size() == Constant.ONE_NUMBER);
 	}
 
-	private InputUserDataError checkEmail(String email) throws UserValidationException {
+	private InputUserDataError checkEmail(String email, UserDAO userDAO) throws UserValidationException {
 		Pattern pattern;
 		Matcher matcher;
 		pattern = Pattern.compile(EMAIL_REGEX);
@@ -125,7 +131,7 @@ public class UserValidationServiceImpl implements UserValidationService {
 					return InputUserDataError.EMAIL_INCORRECT;
 				}
 
-				if (isEmail(email)) {
+				if (isEmail(email, userDAO)) {
 					return InputUserDataError.EMAIL_EXISTS;
 				}
 			}

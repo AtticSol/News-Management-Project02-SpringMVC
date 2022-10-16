@@ -3,17 +3,12 @@ package by.itac.project02.controller.impl;
 import java.io.IOException;
 import java.util.List;
 
-//import jakarta.servlet.ServletException;
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpServletResponse;
-//import jakarta.servlet.http.HttpSession;
 import by.itac.project02.bean.NewsData;
 import by.itac.project02.controller.Atribute;
 import by.itac.project02.controller.JSPPageName;
 import by.itac.project02.controller.SessionAtribute;
 import by.itac.project02.service.NewsService;
 import by.itac.project02.service.ServiceException;
-import by.itac.project02.service.ServiceProvider;
 import by.itac.project02.service.validation.NewsValidationException;
 import by.itac.project02.util.Constant;
 
@@ -22,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/command")
 public class BasePage {
-
-	private final NewsService newsService = ServiceProvider.getInstance().getNewsService();
+	
+	@Autowired
+	private NewsService newsService;
 
 	@RequestMapping("/go_to_base_page")
 	public String goToBasePage(HttpServletRequest request, Model model)

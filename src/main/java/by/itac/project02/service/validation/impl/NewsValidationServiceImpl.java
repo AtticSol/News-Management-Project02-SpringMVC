@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import by.itac.project02.bean.NewsData;
 import by.itac.project02.service.validation.NewsValidationException;
 import by.itac.project02.service.validation.NewsValidationService;
 import by.itac.project02.util.Constant;
 import by.itac.project02.util.InputNewsDataError;
 
+@Service
 public class NewsValidationServiceImpl implements NewsValidationService {
 
 	private static final InputNewsDataError noError = InputNewsDataError.NO_ERROR;

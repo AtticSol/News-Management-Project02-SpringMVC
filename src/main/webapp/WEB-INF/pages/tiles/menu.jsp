@@ -21,11 +21,11 @@
 					style="list-style-image: url(${pageContext.request.contextPath}/resources/images/img.jpg); text-align: left;">
 
 					<li style="padding-left: 15px;"><a
-						href="go_to_news_list">${newsList}</a><br /></li>
+						href="${pageContext.request.contextPath}/news/go_to_news_list">${newsList}</a><br /></li>
 
 					<c:if test="${not (sessionScope.role eq  'user')}">
 						<li style="padding-left: 15px;"><a
-							href="go_to_add_news?previousPresentation=newsList&pageNumber=${pageNumber}">${addNews}</a><br />
+							href="${pageContext.request.contextPath}/news/go_to_add_news?previousPresentation=newsList&pageNumber=${pageNumber}">${addNews}</a><br />
 						</li>
 					</c:if>
 

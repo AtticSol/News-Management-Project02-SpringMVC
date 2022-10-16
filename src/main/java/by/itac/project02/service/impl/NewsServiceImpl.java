@@ -3,23 +3,32 @@ package by.itac.project02.service.impl;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import by.itac.project02.bean.InfoAboutUpdatedNews;
 import by.itac.project02.bean.NewsData;
-import by.itac.project02.dao.DAOProvider;
 import by.itac.project02.dao.NewsDAO;
 import by.itac.project02.dao.NewsDAOException;
 import by.itac.project02.service.NewsService;
 import by.itac.project02.service.ServiceException;
 import by.itac.project02.service.validation.NewsValidationException;
 import by.itac.project02.service.validation.NewsValidationService;
-import by.itac.project02.service.validation.ValidationProvider;
 import by.itac.project02.util.Constant;
 
+@Service
 public class NewsServiceImpl implements NewsService {
-	private final NewsDAO newsDAO = DAOProvider.getInstance().getNewsDAO();
-	private final NewsValidationService newsValidationService = ValidationProvider.getInstance()
-			.getNewsValidationService();
+	
+	@Autowired
+	private NewsDAO newsDAO;	
+
+	@Autowired
+	private NewsValidationService newsValidationService;
+
 
 	@Override
+	@Transactional
 	public int save(NewsData news, int reporterID) throws ServiceException, NewsValidationException {
 		if (!newsValidationService.addNewsDataValidation(news)) {
 			throw new NewsValidationException("Error news validation");
@@ -38,6 +47,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
+	@Transactional
 	public NewsData findById(int id) throws ServiceException, NewsValidationException {
 		if (!newsValidationService.isNumberValidation(id)) {
 			throw new NewsValidationException("Error id news validation");
@@ -51,19 +61,24 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
+	@Transactional
 	public List<NewsData> latestList(int count) throws ServiceException, NewsValidationException {
 		if (!newsValidationService.isNumberValidation(count)) {
 			throw new NewsValidationException("Error count news validation");
 		}
 
-		try {
+//		try {
+//			return newsDAO.latestsList(count);
+//		} catch (NewsDAOException e) {
+//			throw new ServiceException(e);
+//		}
+
 			return newsDAO.latestsList(count);
-		} catch (NewsDAOException e) {
-			throw new ServiceException(e);
-		}
+
 	}
 
 	@Override
+	@Transactional
 	public List<NewsData> newsListByPageNumber(int pageNumber) throws ServiceException, NewsValidationException {
 		if (!newsValidationService.isNumberValidation(pageNumber)) {
 			throw new NewsValidationException("Error page number validation");
@@ -89,6 +104,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
+	@Transactional
 	public List<Integer> pageList() throws ServiceException {
 
 		try {
@@ -113,7 +129,9 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public void updateNews(NewsData news, int reporterID) throws ServiceException, NewsValidationException {
+	@Transactional
+	public void updateNews(InfoAboutUpdatedNews info, int reporterID, NewsData news) throws ServiceException, NewsValidationException {
+
 
 		if (!newsValidationService.isNumberValidation(reporterID)) {
 			throw new NewsValidationException("Error id reporter validation");
@@ -124,13 +142,15 @@ public class NewsServiceImpl implements NewsService {
 		}
 
 		try {
-			newsDAO.updateNews(news, reporterID);
+			newsDAO.updateNews(info, reporterID, news);
+
 		} catch (NewsDAOException e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
+	@Transactional
 	public void deleteNews(String[] idNewsArrStr) throws ServiceException, NewsValidationException {
 
 		if (!newsValidationService.newsIdValidation(idNewsArrStr)) {
