@@ -54,7 +54,7 @@ public class NewsValidationServiceImpl implements NewsValidationService {
 
 	@Override
 	public boolean newsIdValidation(String[] idNewsArrStr) throws NewsValidationException {
-		List<String> errorList = new ArrayList<String>();
+		List<String> errorList = Collections.synchronizedList(new ArrayList<String>());
 
 		if (idNewsArrStr == null) {
 			error(errorList, InputNewsDataError.NO_NEWS_TO_DELETE_ERROR);
