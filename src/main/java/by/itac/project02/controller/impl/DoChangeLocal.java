@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import by.itac.project02.controller.SessionAtribute;
+import by.itac.project02.controller.atribute.SessionAtribute;
 
 @Controller
 @RequestMapping("/local")

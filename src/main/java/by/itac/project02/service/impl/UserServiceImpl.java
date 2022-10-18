@@ -2,6 +2,7 @@ package by.itac.project02.service.impl;
 
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +12,6 @@ import by.itac.project02.dao.UserDAO;
 import by.itac.project02.dao.UserDAOException;
 import by.itac.project02.service.ServiceException;
 import by.itac.project02.service.UserService;
-import by.itac.project02.service.validation.UserValidationException;
-import by.itac.project02.service.validation.UserValidationService;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,19 +19,20 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDAO userDAO;
 
-	@Autowired
-	private UserValidationService userValidationService;
-
 	@Override
 	@Transactional
-	public int userID(String login, String password) throws ServiceException, UserValidationException {
-
-		if (!userValidationService.inputAithorizationDataValidation(login, password, userDAO)) {
-			throw new UserValidationException("Error validation");
-		}
+	public int userID(String login, String password) throws ServiceException {
 
 		try {
-			List<UserData> user = userDAO.userID(login);
+
+			List<UserData> user = userDAO.takePassword(login);
+			String hashPassword = user.get(0).getPassword();
+			String salt = hashPassword.substring(0, 29);
+			if (!hashPassword.equals(BCrypt.hashpw(password, salt))) {
+				throw new ServiceException("Error validation");
+			}
+
+			user = userDAO.userID(login);
 
 			if (user.size() != 1) {
 				throw new ServiceException("Error getting id. Login is not unique.");
@@ -46,12 +46,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public String role(int userID) throws ServiceException, UserValidationException {
-
-		if (userValidationService.userIDValidation(userID)) {
-			throw new UserValidationException("Error validation");
-		}
-
+	public String role(int userID) throws ServiceException {
 		try {
 			return userDAO.role(userID).getRole();
 		} catch (UserDAOException e) {
@@ -61,11 +56,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public int registration(UserData user) throws ServiceException, UserValidationException {
+	public int registration(UserData user) throws ServiceException {
 
-		if (!userValidationService.inputRegistrationDataValidation(user, userDAO)) {
-			throw new UserValidationException("Error validation");
-		}
+		String hashPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+		user.setPassword(hashPassword);
 
 		try {
 			return userDAO.registration(user);

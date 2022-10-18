@@ -3,7 +3,7 @@ package by.itac.project02.controller.impl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import by.itac.project02.controller.JSPPageName;
+import by.itac.project02.controller.atribute.JSPPageName;
 
 @Controller
 public class IndexPage {

@@ -6,14 +6,13 @@ import java.util.List;
 
 import by.itac.project02.bean.InfoAboutUpdatedNews;
 import by.itac.project02.bean.NewsData;
-import by.itac.project02.controller.Atribute;
-import by.itac.project02.controller.JSPPageName;
-import by.itac.project02.controller.Role;
-import by.itac.project02.controller.SessionAtribute;
+import by.itac.project02.controller.atribute.Atribute;
+import by.itac.project02.controller.atribute.Constant;
+import by.itac.project02.controller.atribute.JSPPageName;
+import by.itac.project02.controller.atribute.Role;
+import by.itac.project02.controller.atribute.SessionAtribute;
 import by.itac.project02.service.NewsService;
 import by.itac.project02.service.ServiceException;
-import by.itac.project02.service.validation.NewsValidationException;
-import by.itac.project02.util.Constant;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +31,7 @@ import com.mysql.cj.util.StringUtils;
 @Controller
 @RequestMapping("/news")
 public class News {
-	
+
 	@Autowired
 	private NewsService newsService;
 
@@ -67,10 +66,10 @@ public class News {
 			model.addAttribute(Atribute.PAGE_MODEL, pageList);
 			model.addAttribute(Atribute.PRESENTATION, Atribute.NEWS_LIST);
 
-			session.setAttribute(SessionAtribute.PAGE_URL, pageURL(JSPPageName.GO_TO_NEWS_LIST,
-					Atribute.PAGE_NUMBER, String.valueOf(pageNumber)));
+			session.setAttribute(SessionAtribute.PAGE_URL,
+					pageURL(JSPPageName.GO_TO_NEWS_LIST, Atribute.PAGE_NUMBER, String.valueOf(pageNumber)));
 
-		} catch (ServiceException | NewsValidationException e) {
+		} catch (ServiceException e) {
 			return "redirect:/" + JSPPageName.GO_TO_ERROR_PAGE;
 		}
 
@@ -78,11 +77,8 @@ public class News {
 	}
 
 	@RequestMapping("/go_to_view_news")
-	public String viewNews(HttpServletRequest request,
-			@RequestParam(Atribute.NEWS_ID) int newsID,
-			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
-			Model model)
-			throws ServletException, IOException {
+	public String viewNews(HttpServletRequest request, @RequestParam(Atribute.NEWS_ID) int newsID,
+			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber, Model model) throws ServletException, IOException {
 
 		NewsData news;
 		HttpSession session = request.getSession(false);
@@ -95,11 +91,10 @@ public class News {
 			model.addAttribute(Atribute.PAGE_NUMBER, pageNumber);
 			model.addAttribute(Atribute.NEWS_MODEL, news);
 
-			session.setAttribute(SessionAtribute.PAGE_URL, pageURL(JSPPageName.GO_TO_VIEW_NEWS,
-					Atribute.NEWS_ID, String.valueOf(newsID),
-					Atribute.PRESENTATION, Atribute.VIEW_NEWS));
+			session.setAttribute(SessionAtribute.PAGE_URL, pageURL(JSPPageName.GO_TO_VIEW_NEWS, Atribute.NEWS_ID,
+					String.valueOf(newsID), Atribute.PRESENTATION, Atribute.VIEW_NEWS));
 
-		} catch (ServiceException | NewsValidationException e) {
+		} catch (ServiceException e) {
 			return "redirect:/" + JSPPageName.GO_TO_ERROR_PAGE;
 		}
 		return JSPPageName.BASE_PAGE;
@@ -129,7 +124,7 @@ public class News {
 			model.addAttribute(Atribute.NEWS_MODEL, news);
 			model.addAttribute(Atribute.UPDATED_NEWS_MODEL, new InfoAboutUpdatedNews());
 
-		} catch (ServiceException | NewsValidationException e) {
+		} catch (ServiceException e) {
 			return "redirect:/" + JSPPageName.GO_TO_ERROR_PAGE;
 		}
 		return JSPPageName.BASE_PAGE;
@@ -137,11 +132,9 @@ public class News {
 	}
 
 	@RequestMapping("/go_to_add_news")
-	public String goToAddNews(HttpServletRequest request,
-			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
-			@RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentation,
-			Model model)
-					throws ServletException, IOException {
+	public String goToAddNews(HttpServletRequest request, @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
+			@RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentation, Model model)
+			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
 
@@ -149,19 +142,16 @@ public class News {
 		model.addAttribute(Atribute.PREVIOUS_PRESENTAION, prePresentation);
 		model.addAttribute(Atribute.PRESENTATION, Atribute.ADD_NEWS);
 
-		session.setAttribute(SessionAtribute.PAGE_URL,
-				pageURL(JSPPageName.GO_TO_ADD_NEWS, Atribute.PREVIOUS_PRESENTAION, prePresentation,
-						Atribute.PAGE_NUMBER, String.valueOf(pageNumber)));
+		session.setAttribute(SessionAtribute.PAGE_URL, pageURL(JSPPageName.GO_TO_ADD_NEWS,
+				Atribute.PREVIOUS_PRESENTAION, prePresentation, Atribute.PAGE_NUMBER, String.valueOf(pageNumber)));
 		model.addAttribute(Atribute.NEWS_MODEL, new NewsData());
 
 		return JSPPageName.BASE_PAGE;
 	}
 
 	@RequestMapping("/do_add_news")
-	public String doAddNews(HttpServletRequest request,
-			@ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
-			Model model)
-					throws ServletException, IOException {
+	public String doAddNews(HttpServletRequest request, @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
+			Model model) throws ServletException, IOException {
 
 		HttpSession session;
 		int reporterID;
@@ -169,75 +159,52 @@ public class News {
 
 		session = request.getSession(false);
 		reporterID = takeNumber(session.getAttribute(SessionAtribute.USER_ID).toString());
-		
+
 		try {
 			newsID = newsService.save(newsData, reporterID);
 			session.setAttribute(Atribute.NEWS, newsData);
 
-			return "redirect:/" + pageURL(JSPPageName.GO_TO_VIEW_NEWS,
-					Atribute.PRESENTATION, Atribute.VIEW_NEWS,
-					Atribute.NEWS_ID, String.valueOf(newsID),
-					Atribute.PAGE_NUMBER,	String.valueOf(Constant.ONE_PAGE));
+			return "redirect:/" + pageURL(JSPPageName.GO_TO_VIEW_NEWS, Atribute.PRESENTATION, Atribute.VIEW_NEWS,
+					Atribute.NEWS_ID, String.valueOf(newsID), Atribute.PAGE_NUMBER, String.valueOf(Constant.ONE_PAGE));
 
 		} catch (ServiceException e) {
 			return "redirect:/" + JSPPageName.ERROR_PAGE;
-		} catch (NewsValidationException e) {
-
-			model.addAttribute(Atribute.ERROR_LIST, e.getErrorList());
-			model.addAttribute(Atribute.PRESENTATION, Atribute.ADD_NEWS);
-			model.addAttribute(Atribute.PREVIOUS_PRESENTAION, Atribute.NEWS_LIST);
-			model.addAttribute(Atribute.PAGE_NUMBER, String.valueOf(Constant.ONE_PAGE));
-
-			return JSPPageName.BASE_PAGE;
 		}
 
 	}
 
 	@RequestMapping("/do_edit_news")
-	public String doEditNews(HttpServletRequest request,
-			@ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
+	public String doEditNews(HttpServletRequest request, @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
 			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
-			@ModelAttribute(Atribute.UPDATED_NEWS_MODEL) InfoAboutUpdatedNews info,
-			Model model,
-			RedirectAttributes redirectAttributes)
-					throws ServletException, IOException {
+			@ModelAttribute(Atribute.UPDATED_NEWS_MODEL) InfoAboutUpdatedNews info, Model model,
+			RedirectAttributes redirectAttributes) throws ServletException, IOException {
 
 		HttpSession session;
 		int reporterID;
-		int newsID;		
+		int newsID;
 
 		session = request.getSession(false);
 
 		reporterID = takeNumber(session.getAttribute(SessionAtribute.USER_ID).toString());
 		newsID = takeNumber(newsData.getNewsID().toString());
-		
+
 		if (!(request.getParameter(Atribute.DATE_NEWS).isEmpty())) {
 			newsData.setNewsDate(LocalDate.parse(request.getParameter(Atribute.DATE_NEWS)));
-		} 
-		
+		}
+
 		info.setUpdatedNews(newsData);
-		
+
 		try {
 			newsService.updateNews(info, reporterID, newsData);
 
 			session.setAttribute(Atribute.NEWS, newsData);
 			redirectAttributes.addAttribute(Atribute.PAGE_NUMBER, pageNumber);
 
-			return "redirect:/" + pageURL(JSPPageName.GO_TO_VIEW_NEWS,
-					Atribute.PRESENTATION, Atribute.VIEW_NEWS,
+			return "redirect:/" + pageURL(JSPPageName.GO_TO_VIEW_NEWS, Atribute.PRESENTATION, Atribute.VIEW_NEWS,
 					Atribute.NEWS_ID, String.valueOf(newsID));
 
 		} catch (ServiceException e) {
 			return "redirect:/" + JSPPageName.ERROR_PAGE;
-		} catch (NewsValidationException e) {
-
-			model.addAttribute(Atribute.ERROR_LIST, e.getErrorList());
-			model.addAttribute(Atribute.PRESENTATION, Atribute.EDIT_NEWS);
-			model.addAttribute(Atribute.PREVIOUS_PRESENTAION, Atribute.VIEW_NEWS);
-			model.addAttribute(Atribute.PAGE_NUMBER, pageNumber);
-			model.addAttribute(Atribute.NEWS_ID, String.valueOf(newsID));
-			
-			return JSPPageName.BASE_PAGE;
 		}
 
 	}
@@ -245,10 +212,8 @@ public class News {
 	@RequestMapping("/do_cancel")
 	public String doCancel(HttpServletRequest request,
 			@RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentaion,
-			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
-			@ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
-			RedirectAttributes redirectAttributes)
-					throws ServletException, IOException {
+			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber, @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
+			RedirectAttributes redirectAttributes) throws ServletException, IOException {
 
 		if (Atribute.VIEW_NEWS.equals(prePresentaion)) {
 			redirectAttributes.addAttribute(Atribute.NEWS_ID, newsData.getNewsID());
@@ -263,10 +228,8 @@ public class News {
 	}
 
 	@RequestMapping("/do_delete_news")
-	public String doDeleteNews(HttpServletRequest request,
-			Model model,
-			RedirectAttributes redirectAttributes)
-					throws ServletException, IOException {
+	public String doDeleteNews(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes)
+			throws ServletException, IOException {
 
 		String[] newsIDArr;
 		HttpSession session;
@@ -290,12 +253,6 @@ public class News {
 			}
 		} catch (ServiceException e) {
 			return "redirect:/" + JSPPageName.ERROR_PAGE;
-		} catch (NewsValidationException e) {
-
-			redirectAttributes.addAttribute(Atribute.PRESENTATION, Atribute.NEWS_LIST);
-			redirectAttributes.addAttribute(Atribute.NO_NEWS_MODEL, e.getErrorList());
-
-			return "redirect:/" + JSPPageName.GO_TO_NEWS_LIST;
 		}
 
 	}
@@ -307,8 +264,7 @@ public class News {
 		}
 		return Constant.ONE_PAGE;
 	}
-	
-	
+
 	private int takeNumber(String inputNumber) {
 		if (!StringUtils.isStrictlyNumeric(inputNumber)) {
 			return Constant.NO_NUMBER;
@@ -318,8 +274,7 @@ public class News {
 			return Integer.parseInt(inputNumber);
 		}
 	}
-	
-	
+
 	// first argument - command, others - attributes with values
 	private String pageURL(String command, String... param) {
 		StringBuffer sb = new StringBuffer();

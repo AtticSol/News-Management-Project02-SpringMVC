@@ -3,13 +3,12 @@ package by.itac.project02.controller.impl;
 import java.io.IOException;
 
 import by.itac.project02.bean.LoginData;
-import by.itac.project02.controller.Atribute;
-import by.itac.project02.controller.JSPPageName;
-import by.itac.project02.controller.Role;
-import by.itac.project02.controller.SessionAtribute;
+import by.itac.project02.controller.atribute.Atribute;
+import by.itac.project02.controller.atribute.JSPPageName;
+import by.itac.project02.controller.atribute.Role;
+import by.itac.project02.controller.atribute.SessionAtribute;
 import by.itac.project02.service.ServiceException;
 import by.itac.project02.service.UserService;
-import by.itac.project02.service.validation.UserValidationException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/login")
 public class Logination {
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -42,11 +41,8 @@ public class Logination {
 	}
 
 	@RequestMapping("/do_sign_in")
-	public String doSignIn(HttpServletRequest request,
-			@ModelAttribute(Atribute.LOGINATION_MODEL) LoginData loginData,
-			Model model,
-			RedirectAttributes redirectAttributes)
-					throws ServletException, IOException {
+	public String doSignIn(HttpServletRequest request, @ModelAttribute(Atribute.LOGINATION_MODEL) LoginData loginData,
+			Model model, RedirectAttributes redirectAttributes) throws ServletException, IOException {
 
 		String login;
 		String password;
@@ -76,9 +72,6 @@ public class Logination {
 
 		} catch (ServiceException e) {
 			return "redirect:/" + JSPPageName.GO_TO_ERROR_PAGE;
-		} catch (UserValidationException e) {
-			model.addAttribute(Atribute.AUTHENTICATION_ERROR, Atribute.AUTHENTICATION_ERROR);
-			return JSPPageName.BASE_PAGE;			
 		}
 	}
 

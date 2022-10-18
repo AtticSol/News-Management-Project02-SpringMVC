@@ -4,14 +4,13 @@ import java.io.IOException;
 
 import by.itac.project02.bean.UserData;
 import by.itac.project02.bean.UserDetail;
-import by.itac.project02.controller.Atribute;
-import by.itac.project02.controller.JSPPageName;
-import by.itac.project02.controller.Role;
-import by.itac.project02.controller.SessionAtribute;
+import by.itac.project02.controller.atribute.Atribute;
+import by.itac.project02.controller.atribute.Constant;
+import by.itac.project02.controller.atribute.JSPPageName;
+import by.itac.project02.controller.atribute.Role;
+import by.itac.project02.controller.atribute.SessionAtribute;
 import by.itac.project02.service.ServiceException;
 import by.itac.project02.service.UserService;
-import by.itac.project02.service.validation.UserValidationException;
-import by.itac.project02.util.Constant;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,14 +26,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/registration")
 public class Registration {
-	
+
 	@Autowired
 	private UserService userService;
 
 	@RequestMapping("/go_to_registration_page")
-	public String goToRegistrationPage(HttpServletRequest request,
-			Model model)
-					throws ServletException, IOException {
+	public String goToRegistrationPage(HttpServletRequest request, Model model) throws ServletException, IOException {
 
 		HttpSession session;
 		session = request.getSession(false);
@@ -50,17 +47,15 @@ public class Registration {
 	@RequestMapping("/do_registration")
 	public String doRegistration(HttpServletRequest request,
 			@ModelAttribute(Atribute.REGISTRATION_MODEL) UserData userRegisterData,
-			@RequestParam(Atribute.NAME) String name,
-			@RequestParam(Atribute.EMAIL) String email,
-			Model model)
-					throws ServletException, IOException {
+			@RequestParam(Atribute.NAME) String name, @RequestParam(Atribute.EMAIL) String email, Model model)
+			throws ServletException, IOException {
 
 		HttpSession session;
 		int userID;
 		String role;
 
 		role = Role.GUEST.getTitle();
-		
+
 		userRegisterData.setUserDetail(new UserDetail(name, email));
 
 		try {
@@ -83,13 +78,6 @@ public class Registration {
 		} catch (ServiceException e) {
 			return JSPPageName.BASE_PAGE;
 
-		} catch (UserValidationException e) {
-			userRegisterData.setPassword(null);
-			model.addAttribute(Atribute.REGISTRATION_MODEL, userRegisterData);
-			model.addAttribute(Atribute.REGISTRATION_ERROR, Atribute.REGISTRATION_ERROR);
-			model.addAttribute(Atribute.ERROR_LIST, e.getErrorList());
-
-			return JSPPageName.BASE_PAGE;
 		}
 	}
 }

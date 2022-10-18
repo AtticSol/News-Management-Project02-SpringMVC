@@ -3,13 +3,12 @@ package by.itac.project02.controller.impl;
 import java.util.List;
 
 import by.itac.project02.bean.NewsData;
-import by.itac.project02.controller.Atribute;
-import by.itac.project02.controller.JSPPageName;
-import by.itac.project02.controller.SessionAtribute;
+import by.itac.project02.controller.atribute.Atribute;
+import by.itac.project02.controller.atribute.Constant;
+import by.itac.project02.controller.atribute.JSPPageName;
+import by.itac.project02.controller.atribute.SessionAtribute;
 import by.itac.project02.service.NewsService;
 import by.itac.project02.service.ServiceException;
-import by.itac.project02.service.validation.NewsValidationException;
-import by.itac.project02.util.Constant;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +44,7 @@ public class BasePage {
 				session.setAttribute(SessionAtribute.USER_STATUS, userStatus);
 			}
 
-		} catch (ServiceException | NewsValidationException e) {
+		} catch (ServiceException e) {
 			return JSPPageName.ERROR_PAGE;
 		}
 		return JSPPageName.BASE_PAGE;
