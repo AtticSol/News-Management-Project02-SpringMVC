@@ -19,13 +19,12 @@ import by.itac.project02.util.Constant;
 
 @Service
 public class NewsServiceImpl implements NewsService {
-	
+
 	@Autowired
-	private NewsDAO newsDAO;	
+	private NewsDAO newsDAO;
 
 	@Autowired
 	private NewsValidationService newsValidationService;
-
 
 	@Override
 	@Transactional
@@ -67,13 +66,11 @@ public class NewsServiceImpl implements NewsService {
 			throw new NewsValidationException("Error count news validation");
 		}
 
-//		try {
-//			return newsDAO.latestsList(count);
-//		} catch (NewsDAOException e) {
-//			throw new ServiceException(e);
-//		}
-
+		try {
 			return newsDAO.latestsList(count);
+		} catch (NewsDAOException e) {
+			throw new ServiceException(e);
+		}
 
 	}
 
@@ -130,8 +127,8 @@ public class NewsServiceImpl implements NewsService {
 
 	@Override
 	@Transactional
-	public void updateNews(InfoAboutUpdatedNews info, int reporterID, NewsData news) throws ServiceException, NewsValidationException {
-
+	public void updateNews(InfoAboutUpdatedNews info, int reporterID, NewsData news)
+			throws ServiceException, NewsValidationException {
 
 		if (!newsValidationService.isNumberValidation(reporterID)) {
 			throw new NewsValidationException("Error id reporter validation");

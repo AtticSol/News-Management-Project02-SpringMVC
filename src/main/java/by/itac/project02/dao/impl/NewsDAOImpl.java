@@ -1,11 +1,7 @@
 package by.itac.project02.dao.impl;
 
-
 import java.util.List;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -20,18 +16,16 @@ import by.itac.project02.dao.NewsDAOException;
 
 @Repository
 public class NewsDAOImpl implements NewsDAO {
-
-	private static final Logger log = LogManager.getRootLogger();
-
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
 	private static final String LATEST_NEWS = "from NewsData order by newsID desc";
 //	private static final String LATEST_NEWS = "from NewsData order by newsid desc";
 
-	@Autowired
-	private SessionFactory sessionFactory;
-
 	@Override
-//	public List<NewsData> latestsList(int count) throws NewsDAOException {
-	public List<NewsData> latestsList(int count) {
+	public List<NewsData> latestsList(int count) throws NewsDAOException {
+		try {
 
 			Session currentSession = sessionFactory.getCurrentSession();
 			Query<NewsData> theQuery = currentSession.createQuery(LATEST_NEWS, NewsData.class);
@@ -39,10 +33,9 @@ public class NewsDAOImpl implements NewsDAO {
 			List<NewsData> latestNews = theQuery.getResultList();
 			return latestNews;
 
-//		} catch (Exception e) {
-//			log.log(Level.ERROR, "Error latest news getting", e);
-//			throw new NewsDAOException("Error latest news getting", e);
-//		}
+		} catch (Exception e) {
+			throw new NewsDAOException("Error latest news getting", e);
+		}
 
 	}
 
@@ -50,17 +43,17 @@ public class NewsDAOImpl implements NewsDAO {
 
 	@Override
 	public List<NewsData> newsListForOnePage(int skip, int count) throws NewsDAOException {
+		try {
 
-		Session currentSession = sessionFactory.getCurrentSession();
-		Query<NewsData> theQuery = currentSession.createQuery(NEWS_FOR_ONE_PAGE, NewsData.class);
-		theQuery.setFirstResult(skip);
-		theQuery.setMaxResults(count);
-		return theQuery.getResultList();
+			Session currentSession = sessionFactory.getCurrentSession();
+			Query<NewsData> theQuery = currentSession.createQuery(NEWS_FOR_ONE_PAGE, NewsData.class);
+			theQuery.setFirstResult(skip);
+			theQuery.setMaxResults(count);
+			return theQuery.getResultList();
 
-//		} catch (SQLException | ConnectionPoolException e) {
-//			log.log(Level.ERROR, "Error one page news getting", e);
-//			throw new NewsDAOException("Error one page news getting", e);
-//		}
+		} catch (Exception e) {
+			throw new NewsDAOException("Error one page news getting", e);
+		}
 
 	}
 
@@ -68,76 +61,69 @@ public class NewsDAOImpl implements NewsDAO {
 
 	@Override
 	public int countOfNews() throws NewsDAOException {
-		Session currentSession = sessionFactory.getCurrentSession();
-		return ((Number) currentSession.createQuery(COUNT_OF_NEWS).uniqueResult()).intValue();
+		try {
+			Session currentSession = sessionFactory.getCurrentSession();
+			return ((Number) currentSession.createQuery(COUNT_OF_NEWS).uniqueResult()).intValue();
 
-//		} catch (SQLException | ConnectionPoolException e) {
-//			log.log(Level.ERROR, "Error count of news getting", e);
-//			throw new NewsDAOException("Error count of news getting", e);
-//		}
+		} catch (Exception e) {
+			throw new NewsDAOException("Error count of news getting", e);
+		}
 	}
 
 	@Override
 	public int addNews(NewsData news, int reporterID) throws NewsDAOException {
+		try {
+			Session currentSession = sessionFactory.getCurrentSession();
+			UserData reporter = currentSession.get(UserData.class, reporterID);
+			news.setReporter(reporter);
+			currentSession.save(news);
+			return news.getNewsID();
 
-		Session currentSession = sessionFactory.getCurrentSession();
-		UserData reporter = currentSession.get(UserData.class, reporterID);
-		news.setReporter(reporter);
-		currentSession.save(news);
-		return news.getNewsID();
-
-//		} catch (SQLException | ConnectionPoolException e) {
-//			log.log(Level.ERROR, "Saving news failed", e);
-//			throw new NewsDAOException("Saving news failed", e);
-//		}
+		} catch (Exception e) {
+			throw new NewsDAOException("Saving news failed", e);
+		}
 
 	}
 
 	@Override
 	public void updateNews(InfoAboutUpdatedNews info, int reporterID, NewsData news) throws NewsDAOException {
-		Session currentSession = sessionFactory.getCurrentSession();
-		UserData reporter = currentSession.get(UserData.class, reporterID);
-		news.setReporter(reporter);
-		info.setReporter(reporter);
-		currentSession.saveOrUpdate(news);
-		currentSession.save(info);
+		try {
+			Session currentSession = sessionFactory.getCurrentSession();
+			UserData reporter = currentSession.get(UserData.class, reporterID);
+			news.setReporter(reporter);
+			info.setReporter(reporter);
+			currentSession.saveOrUpdate(news);
+			currentSession.save(info);
 
-//		} catch (SQLException | ConnectionPoolException e) {
-//			log.log(Level.ERROR, "Editing news failed", e);
-//			throw new NewsDAOException("Editing news failed", e);
-//		}
+		} catch (Exception e) {
+			throw new NewsDAOException("Editing news failed", e);
+		}
 
 	}
 
 	@Override
 	public void deleteNews(int[] id) throws NewsDAOException {
 		try {
-
 			Session currentSession = sessionFactory.getCurrentSession();
 			NewsData news;
-			for (int i = 0; i < id.length; i++) {
-				news = currentSession.get(NewsData.class, id[i]);
+			for (int idNews : id) {
+				news = currentSession.get(NewsData.class, idNews);
 				currentSession.remove(news);
 			}
 		} catch (Exception e) {
-			throw new NewsDAOException();
+			throw new NewsDAOException("Deleting news failed", e);
 		}
-
-//		} catch (SQLException | ConnectionPoolException e) {
-//			log.log(Level.ERROR, "Deleting news failed", e);
-//			throw new NewsDAOException("Deleting news failed", e);
-//		}
 	}
 
 	@Override
 	public NewsData findById(int idNews) throws NewsDAOException {
+		try {
 
-		Session currentSession = sessionFactory.getCurrentSession();
-		return currentSession.get(NewsData.class, idNews);
+			Session currentSession = sessionFactory.getCurrentSession();
+			return currentSession.get(NewsData.class, idNews);
 
-//		} catch (SQLException | ConnectionPoolException e) {
-//			log.log(Level.ERROR, "Finding news failed", e);
-//			throw new NewsDAOException("Finding news failed", e);
-//		}
+		} catch (Exception e) {
+			throw new NewsDAOException("Finding news failed", e);
+		}
 	}
 }

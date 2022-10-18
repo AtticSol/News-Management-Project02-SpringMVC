@@ -1,8 +1,5 @@
 package by.itac.project02.controller.impl;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,11 +10,10 @@ import by.itac.project02.controller.SessionAtribute;
 
 @Controller
 @RequestMapping("/local")
-public class DoChangeLocal{
+public class DoChangeLocal {
 
-	
 	@RequestMapping("/do_change_local")
-	public String doChangeLocal(HttpServletRequest request) throws ServletException, IOException {
+	public String doChangeLocal(HttpServletRequest request) {
 		String local;
 		String url;
 
@@ -26,7 +22,7 @@ public class DoChangeLocal{
 		local = request.getParameter(SessionAtribute.LOCAL);
 		url = session.getAttribute(SessionAtribute.PAGE_URL).toString();
 		session.setAttribute(SessionAtribute.LOCAL, local);
-		
+
 		return "redirect:/" + url;
 
 	}

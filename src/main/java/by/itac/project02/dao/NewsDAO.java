@@ -7,8 +7,7 @@ import by.itac.project02.bean.NewsData;
 
 public interface NewsDAO {
 
-//	List<NewsData> latestsList(int count) throws NewsDAOException;
-	List<NewsData> latestsList(int count);
+	List<NewsData> latestsList(int count) throws NewsDAOException;
 
 	List<NewsData> newsListForOnePage(int skip, int count) throws NewsDAOException;
 
