@@ -1,6 +1,7 @@
 package by.itac.project02.bean;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,5 +59,27 @@ public class UserDetail implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email, idUserDetail, name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserDetail other = (UserDetail) obj;
+		return Objects.equals(email, other.email) && idUserDetail == other.idUserDetail
+				&& Objects.equals(name, other.name);
+	}
+
+	@Override
+	public String toString() {
+		return "UserDetail [idUserDetail=" + idUserDetail + ", name=" + name + ", email=" + email + "]";
+	}	
 }
