@@ -2,6 +2,7 @@ package by.itac.project02.bean;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -84,8 +85,30 @@ public class InfoAboutUpdatedNews implements Serializable {
 	public void setUpdatedNews(NewsData updatedNews) {
 		this.updatedNews = updatedNews;
 	}
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dateOfNewsUpdate, newsUpdateID, reporter, updatedNews);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InfoAboutUpdatedNews other = (InfoAboutUpdatedNews) obj;
+		return Objects.equals(dateOfNewsUpdate, other.dateOfNewsUpdate) && newsUpdateID == other.newsUpdateID
+				&& Objects.equals(reporter, other.reporter) && Objects.equals(updatedNews, other.updatedNews);
+	}
+
+	@Override
+	public String toString() {
+		return "InfoAboutUpdatedNews [newsUpdateID=" + newsUpdateID + ", dateOfNewsUpdate=" + dateOfNewsUpdate
+				+ ", reporter=" + reporter + ", updatedNews=" + updatedNews + "]";
+	}
+		
 
 }
