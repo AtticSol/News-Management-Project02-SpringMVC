@@ -238,7 +238,7 @@ public class News {
 		}
 	}
 
-	@DeleteMapping("/do_delete_news")
+	@RequestMapping("/do_delete_news")
 	public String doDeleteNews(HttpServletRequest request,
 				   Model model,
 				   RedirectAttributes redirectAttributes)
