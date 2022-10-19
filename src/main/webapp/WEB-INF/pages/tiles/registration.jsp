@@ -17,12 +17,6 @@
 <fmt:message bundle="${loc}" key="local.registration.email.placeholder" var="emailPlaceholder" />
 <fmt:message bundle="${loc}" key="local.registration.sign.up" var="signup" />
 <fmt:message bundle="${loc}" key="local.message.error.registration" var="registrationErrorMessage" />
-<fmt:message bundle="${loc}" key="local.registration.error.login.exists" var="loginExistsMessage" />
-<fmt:message bundle="${loc}" key="local.registration.error.login.length" var="loginLengthMessage" />
-<fmt:message bundle="${loc}" key="local.registration.error.password.creation" var="passwordCreateErrorMessage" />
-<fmt:message bundle="${loc}" key="local.registration.error.password.confirmation" var="passwordConfirmErrorMessage" />
-<fmt:message bundle="${loc}" key="local.registration.error.email.exists" var="emailExistsMessage" />
-<fmt:message bundle="${loc}" key="local.registration.error.email.incorrect" var="emailIncorrectMessage" />
 <fmt:message bundle="${loc}" key="local.registration.button.main" var="backToMain" />
 
 <style>
@@ -36,10 +30,6 @@
 	<h1>${registrationTitle}</h1><br />
 
 	<form:form action="do_registration" modelAttribute="registrationData">
-	
-		<c:if test="${not (registrationError eq null)}">
-			<font class="redWarning"> ${registrationErrorMessage} </font>
-		</c:if>
 
  		<div class="inline_blocks">
 			<div class="block1">
@@ -59,16 +49,6 @@
 			</div>
 		</div>
 
-		<c:forEach var="error" items="${errorList}">
-			<c:if test="${error eq 'loginExists'}">
-				<font class="redWarning"> ${loginExistsMessage} </font>
-			</c:if>
-
-			<c:if test="${error eq 'loginLength'}">
-				<font class="redWarning"> ${loginLengthMessage}	</font>
-			</c:if> 
-		</c:forEach>
-
 		<div class="inline_blocks">
 			<div class="block1">
 				<div class="title">${password}:</div>
@@ -77,30 +57,7 @@
 				<form:password placeholder="${passwordPlaceholder}" path="password" class="text" />
 			</div>
 		</div>
-		
-		<c:forEach var="error" items="${errorList}">
-			<c:if test="${error eq 'passwordCreateError'}">
-				<font class="redWarning"> ${passwordCreateErrorMessage}	</font>
-			</c:if>		
-		</c:forEach>
-
-		
-<%--  		<div class="inline_blocks">
-			<div class="block1">
-				<div class="title">${confirmPassword}:</div>
-			</div>
-			<div class="block2">
-				<input type="password" name="confirmPassword" value="" placeholder="${confirmPasswordPlaceholder}"  class="text" />
-			</div>
-		</div>
-		<br />
-		
- 		<c:forEach var="error" items="${errorList}">
-			<c:if test="${erroe eq 'passwordConfirmError'}">
-				<font class="redWarning"> ${passwordConfirmErrorMessage} </font>
-			</c:if>
-		</c:forEach> --%>
-	
+			
 		<div class="inline_blocks">
 			<div class="block1">
 				<div class="title">${email}:</div>
@@ -110,15 +67,6 @@
 			</div>
 		</div>
 		
-		<c:forEach var="error" items="${errorList}">
-			<c:if test="${error eq 'emailExists'}">
-				<font class="redWarning"> ${emailExistsError} </font>
-			</c:if>
-			<c:if test="${error eq 'emailIncorrect'}">
-				<font class="redWarning"> ${emailIncorrectMessage} </font>
-			</c:if>
-		</c:forEach>
-
 		<div class="button">
 			<input type="submit" value="${signup}" />
 		</div>
