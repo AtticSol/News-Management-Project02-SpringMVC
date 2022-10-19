@@ -35,7 +35,7 @@ public class News {
 	@Autowired
 	private NewsService newsService;
 
-	@RequestMapping("/go_to_news_list")
+	@GetMapping("/go_to_news_list")
 	public String newsList(RedirectAttributes redirectAttributes,
 			       HttpServletRequest request,
 			       Model model) 
@@ -78,7 +78,7 @@ public class News {
 		return JSPPageName.BASE_PAGE;
 	}
 
-	@RequestMapping("/go_to_view_news")
+	@GetMapping("/go_to_view_news")
 	public String viewNews(HttpServletRequest request,
 			       @RequestParam(Atribute.NEWS_ID) int newsID,
 			       @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
@@ -105,7 +105,7 @@ public class News {
 		return JSPPageName.BASE_PAGE;
 	}
 
-	@RequestMapping("/go_to_edit_news")
+	@GetMapping("/go_to_edit_news")
 	public String goToEditNews(HttpServletRequest request,
 				   @RequestParam("newsId") int newsID,
 				   @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
@@ -158,7 +158,7 @@ public class News {
 		return JSPPageName.BASE_PAGE;
 	}
 
-	@RequestMapping("/do_add_news")
+	@PostMapping("/do_add_news")
 	public String doAddNews(HttpServletRequest request,
 				@ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
 				Model model) 
@@ -184,7 +184,7 @@ public class News {
 
 	}
 
-	@RequestMapping("/do_edit_news")
+	@PostMapping("/do_edit_news")
 	public String doEditNews(HttpServletRequest request,
 				 @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
 				 @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
@@ -223,7 +223,7 @@ public class News {
 
 	}
 
-	@RequestMapping("/do_cancel")
+	@GetMapping("/do_cancel")
 	public String doCancel(HttpServletRequest request,
 			       @RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentaion,
 			       @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
@@ -243,7 +243,7 @@ public class News {
 		}
 	}
 
-	@RequestMapping("/do_delete_news")
+	@DeleteMapping("/do_delete_news")
 	public String doDeleteNews(HttpServletRequest request,
 				   Model model,
 				   RedirectAttributes redirectAttributes)
