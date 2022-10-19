@@ -29,7 +29,8 @@ public class Logination {
 	private UserService userService;
 
 	@RequestMapping("/logination_form")
-	public String loginationForm(Model model, HttpServletRequest request) {
+	public String loginationForm(Model model,
+				     HttpServletRequest request) {
 
 		HttpSession session = request.getSession(false);
 
@@ -41,8 +42,11 @@ public class Logination {
 	}
 
 	@RequestMapping("/do_sign_in")
-	public String doSignIn(HttpServletRequest request, @ModelAttribute(Atribute.LOGINATION_MODEL) LoginData loginData,
-			Model model, RedirectAttributes redirectAttributes) throws ServletException, IOException {
+	public String doSignIn(HttpServletRequest request,
+			       @ModelAttribute(Atribute.LOGINATION_MODEL) LoginData loginData,
+			       Model model,
+			       RedirectAttributes redirectAttributes)
+					throws ServletException, IOException {
 
 		String login;
 		String password;
@@ -78,7 +82,6 @@ public class Logination {
 	@RequestMapping("/do_sign_out")
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		HttpSession session;
-
 		session = request.getSession(false);
 
 		session.removeAttribute(SessionAtribute.USER_STATUS);
