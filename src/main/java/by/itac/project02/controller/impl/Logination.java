@@ -29,8 +29,7 @@ public class Logination {
 	private UserService userService;
 
 	@RequestMapping("/logination_form")
-	public String loginationForm(Model model,
-				     HttpServletRequest request) {
+	public String loginationForm(Model model, HttpServletRequest request) {
 
 		HttpSession session = request.getSession(false);
 
