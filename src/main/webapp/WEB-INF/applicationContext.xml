@@ -33,10 +33,6 @@
 	
 	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
 	
-	
-	
-	
-	
 	<bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
@@ -50,7 +46,7 @@
         <property name="maxIdleTime" value="30000" />
 	</bean>  
 	
-    <!-- Setup Hibernate session factory -->
+    	<!-- Setup Hibernate session factory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="myDataSource" />
@@ -62,15 +58,15 @@
 		      <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
 		   </props>
 		</property>
-   </bean>	  
+  	</bean>	  
 
-    <!-- Setup Hibernate transaction manager -->
+    	<!-- Setup Hibernate transaction manager -->
 	<bean id="myTransactionManager"
             class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    	</bean>
     
-    <!-- Enable configuration of transactional behavior based on annotations -->
+    	<!-- Enable configuration of transactional behavior based on annotations -->
 	<tx:annotation-driven transaction-manager="myTransactionManager" />
  		
 </beans>
