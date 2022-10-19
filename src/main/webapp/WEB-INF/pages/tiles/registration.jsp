@@ -29,7 +29,7 @@
 <div id="form">
 	<h1>${registrationTitle}</h1><br />
 
-	<form:form action="do_registration" modelAttribute="registrationData">
+	<form:form action="do_registration" modelAttribute="registrationData" method="POST" >
 
  		<div class="inline_blocks">
 			<div class="block1">
@@ -72,7 +72,7 @@
 		</div>
 	</form:form>
 
-	<form:form action="${pageContext.request.contextPath}/command/go_to_base_page" method="get">
+	<form:form action="${pageContext.request.contextPath}/command/go_to_base_page" method="GET">
 		<input type="hidden" name="userStatus" value="not_active" />
 		<div class="button">
 			<input type="submit" value="${backToMain}" />
