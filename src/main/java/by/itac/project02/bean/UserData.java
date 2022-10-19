@@ -72,12 +72,10 @@ public class UserData implements Serializable{
 	public UserData() { }
 
 	public UserData(String name, String login, String password, 
-//			String confirmPassword, 
 			String email,
 			UserDetail userDetail) {
 		this.login = login;
 		this.password = password;
-//		this.confirmPassword = confirmPassword;
 		this.role = Role.USER.getTitle();
 		this.userDetail = userDetail; 
 	}
@@ -106,14 +104,6 @@ public class UserData implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-//	public String getConfirmPassword() {
-//		return confirmPassword;
-//	}
-//
-//	public void setConfirmPassword(String confirmPassword) {
-//		this.confirmPassword = confirmPassword;
-//	}
 	
 	public String getRole() {
 		return role;
