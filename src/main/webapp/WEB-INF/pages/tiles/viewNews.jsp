@@ -37,21 +37,27 @@
 		<tr>
 			<td class="space_around_title_text">${newsDate}</td>
 
-			<td class="space_around_view_text"><div class="word-breaker">
+			<td class="space_around_view_text">
+				<div class="word-breaker">
 					<c:out value="${newsData.newsDate}" />
-				</div></td>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td class="space_around_title_text">${newsBrief}</td>
-			<td class="space_around_view_text"><div class="word-breaker">
+			<td class="space_around_view_text">
+				<div class="word-breaker">
 					<c:out value="${newsData.briefNews}" />
-				</div></td>
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td class="space_around_title_text">${content}</td>
-			<td class="space_around_view_text"><div class="word-breaker">
+			<td class="space_around_view_text">
+				<div class="word-breaker">
 					<c:out value="${newsData.content}" />
-				</div></td>
+				</div>
+			</td>
 		</tr>
 	</table>
 </div>
