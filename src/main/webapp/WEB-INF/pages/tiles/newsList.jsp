@@ -54,12 +54,12 @@
 				<div class="news-link-to-wrapper">
 
 					<div class="link-position">
-						<a
-							href="go_to_view_news?newsId=${news.newsID}&pageNumber=${pageNumber}">${view}</a>&nbsp;
+						<a href="go_to_view_news?newsId=${news.newsID}&pageNumber=${pageNumber}">${view}</a>&nbsp;
 
 						<c:if test="${not (sessionScope.role eq  'user')}">
-							<a
-								href="go_to_edit_news?newsId=${news.newsID}&previousPresentation=${requestScope.presentation}&pageNumber=${pageNumber}">${edit}</a>
+							<a href="go_to_edit_news?newsId=${news.newsID}&previousPresentation=${requestScope.presentation}&pageNumber=${pageNumber}">
+								${edit}
+							</a>
 						</c:if>
 
 						&nbsp;
@@ -86,8 +86,8 @@
 
 	<div class="no-news">
 		<c:if test="${newsList eq null}">
-        ${noNews}
-	</c:if>
+        		${noNews}
+		</c:if>
 	</div>
 </form:form>
 
