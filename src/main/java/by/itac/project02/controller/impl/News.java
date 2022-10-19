@@ -36,8 +36,10 @@ public class News {
 	private NewsService newsService;
 
 	@RequestMapping("/go_to_news_list")
-	public String newsList(RedirectAttributes redirectAttributes, HttpServletRequest request, Model model)
-			throws ServletException, IOException {
+	public String newsList(RedirectAttributes redirectAttributes,
+			       HttpServletRequest request,
+			       Model model) 
+					throws ServletException, IOException {
 
 		HttpSession session;
 		List<NewsData> newsList;
@@ -77,8 +79,11 @@ public class News {
 	}
 
 	@RequestMapping("/go_to_view_news")
-	public String viewNews(HttpServletRequest request, @RequestParam(Atribute.NEWS_ID) int newsID,
-			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber, Model model) throws ServletException, IOException {
+	public String viewNews(HttpServletRequest request,
+			       @RequestParam(Atribute.NEWS_ID) int newsID,
+			       @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
+			       Model model) 
+					throws ServletException, IOException {
 
 		NewsData news;
 		HttpSession session = request.getSession(false);
@@ -101,10 +106,12 @@ public class News {
 	}
 
 	@RequestMapping("/go_to_edit_news")
-	public String goToEditNews(HttpServletRequest request, @RequestParam("newsId") int newsID,
-			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
-			@RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentation, Model model)
-			throws ServletException, IOException {
+	public String goToEditNews(HttpServletRequest request,
+				   @RequestParam("newsId") int newsID,
+				   @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
+				   @RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentation,
+				   Model model)
+					throws ServletException, IOException {
 
 		NewsData news;
 		HttpSession session = request.getSession(false);
@@ -132,9 +139,11 @@ public class News {
 	}
 
 	@RequestMapping("/go_to_add_news")
-	public String goToAddNews(HttpServletRequest request, @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
-			@RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentation, Model model)
-			throws ServletException, IOException {
+	public String goToAddNews(HttpServletRequest request,
+				  @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
+				  @RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentation,
+				  Model model)
+					throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
 
@@ -150,8 +159,10 @@ public class News {
 	}
 
 	@RequestMapping("/do_add_news")
-	public String doAddNews(HttpServletRequest request, @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
-			Model model) throws ServletException, IOException {
+	public String doAddNews(HttpServletRequest request,
+				@ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
+				Model model) 
+					throws ServletException, IOException {
 
 		HttpSession session;
 		int reporterID;
@@ -174,10 +185,13 @@ public class News {
 	}
 
 	@RequestMapping("/do_edit_news")
-	public String doEditNews(HttpServletRequest request, @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
-			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
-			@ModelAttribute(Atribute.UPDATED_NEWS_MODEL) InfoAboutUpdatedNews info, Model model,
-			RedirectAttributes redirectAttributes) throws ServletException, IOException {
+	public String doEditNews(HttpServletRequest request,
+				 @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
+				 @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
+				 @ModelAttribute(Atribute.UPDATED_NEWS_MODEL) InfoAboutUpdatedNews info,
+				 Model model,
+				 RedirectAttributes redirectAttributes)
+					throws ServletException, IOException {
 
 		HttpSession session;
 		int reporterID;
@@ -211,9 +225,11 @@ public class News {
 
 	@RequestMapping("/do_cancel")
 	public String doCancel(HttpServletRequest request,
-			@RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentaion,
-			@RequestParam(Atribute.PAGE_NUMBER) int pageNumber, @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
-			RedirectAttributes redirectAttributes) throws ServletException, IOException {
+			       @RequestParam(Atribute.PREVIOUS_PRESENTAION) String prePresentaion,
+			       @RequestParam(Atribute.PAGE_NUMBER) int pageNumber,
+			       @ModelAttribute(Atribute.NEWS_MODEL) NewsData newsData,
+			       RedirectAttributes redirectAttributes)
+					throws ServletException, IOException {
 
 		if (Atribute.VIEW_NEWS.equals(prePresentaion)) {
 			redirectAttributes.addAttribute(Atribute.NEWS_ID, newsData.getNewsID());
@@ -228,8 +244,10 @@ public class News {
 	}
 
 	@RequestMapping("/do_delete_news")
-	public String doDeleteNews(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes)
-			throws ServletException, IOException {
+	public String doDeleteNews(HttpServletRequest request,
+				   Model model,
+				   RedirectAttributes redirectAttributes)
+					throws ServletException, IOException {
 
 		String[] newsIDArr;
 		HttpSession session;
