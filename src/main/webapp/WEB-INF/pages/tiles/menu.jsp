@@ -17,15 +17,17 @@
 	<div class="list-menu-invisible-wrapper">
 		<div class="list-menu-wrapper" style="float: right;">
 			<c:if test="${sessionScope.userStatus eq 'active'}">
-				<ul
-					style="list-style-image: url(${pageContext.request.contextPath}/resources/images/img.jpg); text-align: left;">
-
-					<li style="padding-left: 15px;"><a
-						href="${pageContext.request.contextPath}/news/go_to_news_list">${newsList}</a><br /></li>
+				<ul style="list-style-image: url(${pageContext.request.contextPath}/resources/images/img.jpg); text-align: left;">
+					
+					<li style="padding-left: 15px;">
+						<a href="${pageContext.request.contextPath}/news/go_to_news_list">${newsList}</a><br />
+					</li>
 
 					<c:if test="${not (sessionScope.role eq  'user')}">
-						<li style="padding-left: 15px;"><a
-							href="${pageContext.request.contextPath}/news/go_to_add_news?previousPresentation=newsList&pageNumber=${pageNumber}">${addNews}</a><br />
+						<li style="padding-left: 15px;">
+							<a href="${pageContext.request.contextPath}/news/go_to_add_news?previousPresentation=newsList&pageNumber=${pageNumber}">
+								${addNews}
+							</a><br />
 						</li>
 					</c:if>
 
