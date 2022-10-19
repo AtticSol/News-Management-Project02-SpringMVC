@@ -26,7 +26,7 @@ public class BasePage {
 	@Autowired
 	private NewsService newsService;
 
-	@RequestMapping("/go_to_base_page")
+	@GetMapping("/go_to_base_page")
 	public String goToBasePage(HttpServletRequest request, Model model) {
 		List<NewsData> latestNews;
 		HttpSession session;
