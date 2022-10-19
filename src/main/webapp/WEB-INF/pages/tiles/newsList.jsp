@@ -27,7 +27,7 @@
 
 <form:form
 	action="${pageContext.request.contextPath}/news/do_delete_news"
-	modelAttribute="newsList" method="post">
+	modelAttribute="newsList" method="DELETE">
 	
 	
 	&nbsp;&nbsp;
