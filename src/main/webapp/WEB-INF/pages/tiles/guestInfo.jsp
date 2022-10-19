@@ -40,7 +40,7 @@
 	</c:if>
 
 	<c:if test="${sessionScope.userStatus eq 'logination'}">
-		<form:form 	action="${pageContext.request.contextPath}/command/go_to_base_page" method="get">
+		<form:form action="${pageContext.request.contextPath}/command/go_to_base_page" method="GET">
 			<input type="hidden" name="userStatus" value="not_active" />
 			<div class="button">
 				<input type="submit" value="${backToMain}" />
