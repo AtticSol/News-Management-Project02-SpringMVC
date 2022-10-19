@@ -12,18 +12,18 @@
 
 <fmt:setLocale value="${sessionScope.local}" />
 <fmt:setBundle basename="localization.local" var="loc" />
-<fmt:message bundle="${loc}" key="local.header.newstitle" 	var="newstitle" />
-<fmt:message bundle="${loc}" key="local.header.login" var="login" />
-<fmt:message bundle="${loc}" key="local.header.password" var="password" />
+<fmt:message bundle="${loc}" key="local.header.newstitle" 		var="newstitle" />
+<fmt:message bundle="${loc}" key="local.header.login" 			var="login" />
+<fmt:message bundle="${loc}" key="local.header.password" 		var="password" />
 <fmt:message bundle="${loc}" key="local.header.href.registration" 	var="registration" />
 <fmt:message bundle="${loc}" key="local.header.href.logination" 	var="logination" />
 <fmt:message bundle="${loc}" key="local.header.locbutton.href.en" 	var="en_button" />
 <fmt:message bundle="${loc}" key="local.header.locbutton.href.ru"	var="ru_button" />
-<fmt:message bundle="${loc}" key="local.header.button.sign.in" var="in" />
-<fmt:message bundle="${loc}" key="local.header.button.sign.out"	var="out" />
-<fmt:message bundle="${loc}" key="local.message.error.session"	var="sessionError" />
+<fmt:message bundle="${loc}" key="local.header.button.sign.in" 		var="in" />
+<fmt:message bundle="${loc}" key="local.header.button.sign.out"		var="out" />
+<fmt:message bundle="${loc}" key="local.message.error.session"		var="sessionError" />
 <fmt:message bundle="${loc}" key="local.message.error.authentication"	var="authenticationErrorMessage" />
-<fmt:message bundle="${loc}" key="local.message.error.access"	var="accessError" />
+<fmt:message bundle="${loc}" key="local.message.error.access"		var="accessError" />
 
 
 <div class="wrapper">
@@ -39,16 +39,6 @@
 		<c:if test="${not (sessionScope.userStatus eq 'active')}">
 			<c:if test="${not (sessionScope.userStatus eq 'registration')}">
 				<div align="right">
-
-					<%-- <c:if test="${not (requestScope.sessionError eq null)}">
-							<font class="redWarning"> ${sessionError} <br />
-							</font>
-						</c:if>
-
-						<c:if test="${not (requestScope.accessError eq null)}">
-							<font class="redWarning"> ${accessError} <br />
-							</font>
-						</c:if>--%>
 
 					<c:if test="${not (sessionScope.userStatus eq 'logination')}">
 						<a href="${pageContext.request.contextPath}/registration/go_to_registration_page">${registration}</a>&nbsp;&nbsp;
