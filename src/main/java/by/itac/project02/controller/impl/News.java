@@ -41,13 +41,11 @@ public class News {
 			       Model model) 
 					throws ServletException, IOException {
 
-		HttpSession session;
 		List<NewsData> newsList;
 		List<Integer> pageList;
-		String guestRole;
-
-		session = request.getSession(false);
-		guestRole = (String) session.getAttribute(Role.ROLE.getTitle());
+		
+		HttpSession session = request.getSession(false);
+		String guestRole = (String) session.getAttribute(Role.ROLE.getTitle());
 
 		try {
 			pageList = newsService.pageList();
@@ -68,13 +66,10 @@ public class News {
 			model.addAttribute(Atribute.PAGE_MODEL, pageList);
 			model.addAttribute(Atribute.PRESENTATION, Atribute.NEWS_LIST);
 
-			session.setAttribute(SessionAtribute.PAGE_URL,
-					pageURL(JSPPageName.GO_TO_NEWS_LIST, Atribute.PAGE_NUMBER, String.valueOf(pageNumber)));
-
+			session.setAttribute(SessionAtribute.PAGE_URL, pageURL(JSPPageName.GO_TO_NEWS_LIST, Atribute.PAGE_NUMBER, String.valueOf(pageNumber)));
 		} catch (ServiceException e) {
 			return "redirect:/" + JSPPageName.GO_TO_ERROR_PAGE;
 		}
-
 		return JSPPageName.BASE_PAGE;
 	}
 
