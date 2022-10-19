@@ -16,10 +16,6 @@
 <fmt:message bundle="${loc}" key="local.news.newscontent.placeholder" var="contentPlaceholder" />
 <fmt:message bundle="${loc}" key="local.news.button.save" var="save" />
 <fmt:message bundle="${loc}" key="local.news.button.cancel" var="cancel" />
-<fmt:message bundle="${loc}" key="local.news.add.error.title" var="titleErrorMessage" />
-<fmt:message bundle="${loc}" key="local.news.add.error.date" var="dateErrorMessage" />
-<fmt:message bundle="${loc}" key="local.news.add.error.brief" var="briefErrorMessage" />
-<fmt:message bundle="${loc}" key="local.news.add.error.content" var="contentErrorMessage" />
 
 <style>
 .redWarning {
@@ -34,23 +30,6 @@
 
 <br />
 
-<c:forEach var="error" items="${errorList}">
-	<c:if test="${error eq 'titleError'}">
-		<font class="redWarning"> ${titleErrorMessage}<br /></font>
-	</c:if>
-	
- 	<c:if test="${error eq 'briefError'}">
-		<font class="redWarning"> ${briefErrorMessage}<br /></font>
-	</c:if>
-
-	<c:if test="${error eq 'contentError'}">
-		<font class="redWarning"> ${contentErrorMessage}<br /></font>
-	</c:if>
-	
-	<c:if test="${error eq 'dateError'}">
-		<font class="redWarning">${dateErrorMessage}<br /></font>
-	</c:if>
-</c:forEach>
 
 <c:if test="${presentation eq 'addNews' }">
 
@@ -67,25 +46,21 @@
 					<tr>
 						<td class="space_around_title_tex">${newsTitle}</td>
 						<td class="space_around_view_text">
-							<form:input class="text" path="title"
-													 placeholder="${titlePlaceholder}" />
+							<form:input class="text" path="title" placeholder="${titlePlaceholder}" />
 						</td>
 					</tr>
-
 
 					<tr>
 						<td class="space_around_title_tex">${newsBrief}</td>
 						<td class="space_around_view_text">
-							<form:textarea path="briefNews" cols="58" rows="3"
-										   placeholder="${briefPlaceholder}" />
+							<form:textarea path="briefNews" cols="58" rows="3" placeholder="${briefPlaceholder}" />
 						</td>
 					</tr>
 
 					<tr>
 						<td class="space_around_title_tex">${content}</td>
 						<td class="space_around_view_text">
-							<form:textarea 	path="content" cols="58" rows="5"
-											placeholder="${contentPlaceholder}" />
+							<form:textarea 	path="content" cols="58" rows="5" placeholder="${contentPlaceholder}" />
 						</td>
 					</tr>
 					
