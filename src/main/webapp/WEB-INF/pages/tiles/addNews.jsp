@@ -35,7 +35,7 @@
 
 	<form:form action="${pageContext.request.contextPath}/news/do_add_news"
 			   modelAttribute="newsData"
-			   method="post">
+			   method="POST">
 			   
 			   
 		<div class="add-table-margin">
@@ -77,7 +77,7 @@
 <c:if test="${presentation eq 'editNews' }">
 	<form:form action="${pageContext.request.contextPath}/news/do_edit_news"
 			   modelAttribute="newsData"
-			   method="post">
+			   method="POST">
 
 		<div class="add-table-margin">
 			<table class="news_text_format">
@@ -130,7 +130,7 @@
 <div class="second-view-button">
 	<form:form action="${pageContext.request.contextPath}/news/do_cancel"
 			   modelAttribute="newsData"
-			   method="post">
+			   method="GET">
 
 		<form:hidden path="newsID" value="${newsID}" />
 		<input type="hidden" name="previousPresentation" value="${previousPresentation}" />
