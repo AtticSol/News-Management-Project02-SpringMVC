@@ -21,7 +21,6 @@ public class NewsDAOImpl implements NewsDAO {
 	private SessionFactory sessionFactory;
 	
 	private static final String LATEST_NEWS = "from NewsData order by newsID desc";
-//	private static final String LATEST_NEWS = "from NewsData order by newsid desc";
 
 	@Override
 	public List<NewsData> latestsList(int count) throws NewsDAOException {
