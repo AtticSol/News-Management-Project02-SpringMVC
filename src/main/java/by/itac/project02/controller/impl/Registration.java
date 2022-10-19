@@ -31,7 +31,9 @@ public class Registration {
 	private UserService userService;
 
 	@RequestMapping("/go_to_registration_page")
-	public String goToRegistrationPage(HttpServletRequest request, Model model) throws ServletException, IOException {
+	public String goToRegistrationPage(HttpServletRequest request,
+					   Model model)
+						throws ServletException, IOException {
 
 		HttpSession session;
 		session = request.getSession(false);
@@ -46,9 +48,11 @@ public class Registration {
 
 	@RequestMapping("/do_registration")
 	public String doRegistration(HttpServletRequest request,
-			@ModelAttribute(Atribute.REGISTRATION_MODEL) UserData userRegisterData,
-			@RequestParam(Atribute.NAME) String name, @RequestParam(Atribute.EMAIL) String email, Model model)
-			throws ServletException, IOException {
+				     @ModelAttribute(Atribute.REGISTRATION_MODEL) UserData userRegisterData,
+				     @RequestParam(Atribute.NAME) String name, 
+				     @RequestParam(Atribute.EMAIL) String email,
+				     Model model)
+					throws ServletException, IOException {
 
 		HttpSession session;
 		int userID;
