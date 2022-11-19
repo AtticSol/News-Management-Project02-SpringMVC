@@ -10,7 +10,7 @@ Admin has opportunities:
 - Modify news;
 - Delete one / all news;
 - Create news;
-- Change local.
+- Change locale.
 
 Reporter has opportunities:
 - Sign out;
