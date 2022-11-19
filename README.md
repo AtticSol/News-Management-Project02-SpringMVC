@@ -19,16 +19,16 @@ Reporter has opportunities:
 - Modify news;
 - Delete one all news;
 - Create news;
-- Change local.
+- Change locale.
 
 User has opportunities:
 - Sign out;
 - View all news list;
 - View news;
-- Change local.
+- Change locale.
 
 Guest has opportunities:
 - Sign up;
 - Sign in;
 - View 1st page of news list;
-- Change local.
+- Change locale.
