@@ -1,6 +1,6 @@
 # News-Management-Project02-SpringMVC
 
-
+Tech Stack: 	Maven, Spring MVC, Hibernate, MySQL, Tomcat, JSP.
 Functional opportunities by roles: admin, reporter, user and guest.
 
 Admin has opportunities:
